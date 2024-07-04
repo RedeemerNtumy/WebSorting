@@ -11,9 +11,9 @@
     <description>A web application for sorting numbers</description>
 
     <properties>
-        <java.version>21</java.version> <!-- Corrected Java version from 21 to 11 for better compatibility -->
+        <java.version>21</java.version>
         <thymeleaf.version>3.0.15.RELEASE</thymeleaf.version>
-        <servlet.api.version>4.0.1</servlet.api.version> <!-- Updated servlet API version to align with your web.xml and common server configurations -->
+        <servlet.api.version>5.0.0</servlet.api.version>
     </properties>
 
     <dependencies>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>5.0.0</version>
+            <version>${servlet.api.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.2</version> <!-- Updated JUnit version for more recent features and better compatibility -->
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -47,7 +47,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version> <!-- Correct version for compatibility with specified Java version -->
+                <version>3.8.1</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -60,7 +60,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.1</version>
                 <configuration>
-                    <failOnMissingWebXml>true</failOnMissingWebXml> <!-- Ensures that the web.xml must be present -->
+                    <failOnMissingWebXml>true</failOnMissingWebXml>
                 </configuration>
             </plugin>
         </plugins>

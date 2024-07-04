@@ -11,7 +11,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>StartingServlet</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/api/home</url-pattern>
     </servlet-mapping>
 
     <!-- Servlet definition for handling sorting requests -->

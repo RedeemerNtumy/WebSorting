@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet(name = "SortingServlet", urlPatterns = {"/api/sort"})
 public class SortingServlet extends HttpServlet {
@@ -26,10 +28,18 @@ public class SortingServlet extends HttpServlet {
         // Set sorted results and sort type as request attributes
         req.setAttribute("sortType", sortType);
         req.setAttribute("sortedNumbers", Arrays.toString(sortedNumbers));
-        resp.setContentType("text/html");
 
-        // Forward to results page
-        req.getRequestDispatcher("/results.jsp").forward(req, resp);
+        // Generate HATEOAS links
+        String baseUrl = req.getRequestURL().toString().replace(req.getRequestURI(), req.getContextPath());
+        Map<String, String> links = new HashMap<>();
+        links.put("self", baseUrl + "/api/sort");
+        links.put("home", baseUrl + "/api/home");
+
+        resp.setContentType("application/json");
+
+        String jsonResponse = generateJsonResponse(sortedNumbers, sortType, links);
+
+        resp.getWriter().write(jsonResponse);
     }
 
     private int[] sortNumbers(int[] numbers, String sortType) {
@@ -53,5 +63,20 @@ public class SortingServlet extends HttpServlet {
                 throw new IllegalArgumentException("Invalid sort type: " + sortType);
         }
         return numbers;
+    }
+
+    private String generateJsonResponse(int[] sortedNumbers, String sortType, Map<String, String> links) {
+        StringBuilder jsonBuilder = new StringBuilder();
+        jsonBuilder.append("{");
+        jsonBuilder.append("\"sortedNumbers\": \"").append(Arrays.toString(sortedNumbers)).append("\",");
+        jsonBuilder.append("\"sortType\": \"").append(sortType).append("\",");
+        jsonBuilder.append("\"_links\": {");
+        for (Map.Entry<String, String> entry : links.entrySet()) {
+            jsonBuilder.append("\"").append(entry.getKey()).append("\": { \"href\": \"").append(entry.getValue()).append("\" },");
+        }
+        jsonBuilder.deleteCharAt(jsonBuilder.length() - 1); // Remove the trailing comma
+        jsonBuilder.append("}");
+        jsonBuilder.append("}");
+        return jsonBuilder.toString();
     }
 }

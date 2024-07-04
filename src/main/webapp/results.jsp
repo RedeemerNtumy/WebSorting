@@ -57,7 +57,7 @@
 <div class="content">
     <h1>Sorting Results</h1>
     <p class="result">Sorted using <strong><%= request.getAttribute("sortType") %> sort</strong>: <span><%= request.getAttribute("sortedNumbers") %></span></p>
-    <a href="/webSorting_war">Try Again</a>
+    <a href="/webSorting_war/api/home">Home</a>
 </div>
 </body>
 </html>
