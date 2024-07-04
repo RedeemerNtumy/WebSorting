@@ -67,7 +67,7 @@
 <body>
 <div>
     <h1>Welcome to the Sorting Arena</h1>
-    <form action="/webSorting_war/sort" method="post">
+    <form action="/webSorting_war/api/sort" method="post">
         <label for="type">Choose a Sorting Algorithm:</label>
         <select name="type" id="type">
             <option value="quick">Quick Sort</option>

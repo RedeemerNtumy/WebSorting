@@ -1,13 +1,14 @@
 package com.projects.web.websorting;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
 import java.util.Arrays;
 
+@WebServlet(name = "SortingServlet", urlPatterns = {"/api/sort"})
 public class SortingServlet extends HttpServlet {
 
     @Override

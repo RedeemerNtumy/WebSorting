@@ -7,8 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
-@WebServlet(name = "StartingServlet", urlPatterns = {"/api/sort"})
+@WebServlet(name = "StartingServlet", urlPatterns = {"/api/home"})
 public class StartingServlet extends HttpServlet {
 
     @Override
@@ -26,10 +25,7 @@ public class StartingServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Handle any initial POST requests before the sorting action
-        // For instance, you can preprocess data or redirect based on initial parameters
-        resp.setContentType("text/html");
-        resp.getWriter().write("Processing data before sorting...");
-        // Optional: redirect or forward to the sorting servlet or another page
+        // In a RESTful design, POST might not be necessary here unless it's handling initial data creation,
+        // which is not needed for simply serving a page.
     }
 }
