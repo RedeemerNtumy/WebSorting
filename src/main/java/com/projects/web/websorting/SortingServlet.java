@@ -63,15 +63,15 @@ public class SortingServlet extends HttpServlet {
     private Map<String, Object> createLink(String url, String... methods) {
         Map<String, Object> linkDetails = new HashMap<>();
         linkDetails.put("href", url);
-        linkDetails.put("method", Arrays.asList(methods));
+        linkDetails.put("method", methods);
         return linkDetails;
     }
 
     private String generateJsonResponse(int[] sortedNumbers, String sortType, Map<String, Map<String, Object>> links) {
         Map<String, Object> root = new HashMap<>();
-        root.put("sortedNumbers", Arrays.toString(sortedNumbers));
         root.put("sortType", sortType);
         root.put("_links", links);
+        root.put("sortedNumbers", Arrays.toString(sortedNumbers));
         return new Gson().toJson(root);
     }
 }
