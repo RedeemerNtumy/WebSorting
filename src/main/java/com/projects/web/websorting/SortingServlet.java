@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @WebServlet(name = "SortingServlet", urlPatterns = {"/api/sort"})
@@ -68,10 +69,11 @@ public class SortingServlet extends HttpServlet {
     }
 
     private String generateJsonResponse(int[] sortedNumbers, String sortType, Map<String, Map<String, Object>> links) {
-        Map<String, Object> root = new HashMap<>();
-        root.put("sortType", sortType);
-        root.put("_links", links);
-        root.put("sortedNumbers", Arrays.toString(sortedNumbers));
+        Map<String, Object> root = new LinkedHashMap<>();  // Changed from HashMap to LinkedHashMap
+        root.put("sortedNumbers", Arrays.toString(sortedNumbers));  // Inserted first
+        root.put("sortType", sortType);                            // Inserted second
+        root.put("_links", links);                                  // Inserted last
+
         return new Gson().toJson(root);
     }
 }

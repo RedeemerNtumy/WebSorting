@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,14 +35,10 @@ public class StartingServlet extends HttpServlet {
         resp.getWriter().write(jsonResponse);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    }
-
     private Map<String, Object> createLink(String url, String... methods) {
         Map<String, Object> linkDetails = new HashMap<>();
         linkDetails.put("href", url);
-        linkDetails.put("method", Arrays.asList(methods));
+        linkDetails.put("method", methods);
         return linkDetails;
     }
 
