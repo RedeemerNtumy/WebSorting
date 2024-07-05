@@ -15,31 +15,33 @@ public class SortingServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String numbersStr = req.getParameter("numbers");
-        String sortType = req.getParameter("type");
-        int[] numbers = Arrays.stream(numbersStr.split(","))
-                .map(String::trim)
-                .mapToInt(Integer::parseInt)
-                .toArray();
+            String numbersStr = req.getParameter("numbers");
+            String sortType = req.getParameter("type");
+            int[] numbers = Arrays.stream(numbersStr.split(","))
+                    .map(String::trim)
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
 
-        // Perform sorting based on the selected type
-        int[] sortedNumbers = sortNumbers(numbers, sortType);
+            // Perform sorting based on the selected type
+            int[] sortedNumbers = sortNumbers(numbers, sortType);
 
-        // Set sorted results and sort type as request attributes
-        req.setAttribute("sortType", sortType);
-        req.setAttribute("sortedNumbers", Arrays.toString(sortedNumbers));
+            // Set sorted results and sort type as request attributes
+            req.setAttribute("sortType", sortType);
+            req.setAttribute("sortedNumbers", Arrays.toString(sortedNumbers));
 
-        // Generate HATEOAS links
-        String baseUrl = req.getRequestURL().toString().replace(req.getRequestURI(), req.getContextPath());
-        Map<String, String> links = new HashMap<>();
-        links.put("self", baseUrl + "/api/sort");
-        links.put("home", baseUrl + "/api/home");
+            // Generate HATEOAS links
+            String baseUrl = req.getRequestURL().toString().replace(req.getRequestURI(), req.getContextPath());
+            Map<String, String> links = new HashMap<>();
+            links.put("self", baseUrl + "/api/sort");
+            links.put("home", baseUrl + "/api/home");
 
-        resp.setContentType("application/json");
+            resp.setContentType("application/json");
 
-        String jsonResponse = generateJsonResponse(sortedNumbers, sortType, links);
+            String jsonResponse = generateJsonResponse(sortedNumbers, sortType, links);
 
-        resp.getWriter().write(jsonResponse);
+            resp.getWriter().write(jsonResponse);
+
+
     }
 
     private int[] sortNumbers(int[] numbers, String sortType) {
