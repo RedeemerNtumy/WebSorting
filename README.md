@@ -15,8 +15,6 @@ webSorting is a web application developed using Jakarta EE and Thymeleaf for ren
 +-------------------+          +-------------------+
 ```
 
-The high-level architecture diagram above illustrates the main components of the webSorting application, including the user interface, server-side components, and external dependencies.
-
 ### Component Diagram
 
 ```plaintext
@@ -31,9 +29,6 @@ The high-level architecture diagram above illustrates the main components of the
 | SortingService   |    | ConfigService    |    |  Gson (JSON)     |
 +------------------+    +------------------+    +------------------+
 ```
-
-
-This component diagram provides a detailed view of the system's internal components, their relationships, and interactions.
 
 ## Components
 
