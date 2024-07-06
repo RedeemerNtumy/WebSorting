@@ -1,7 +1,7 @@
 package com.projects.web.websorting;
 
 import com.google.gson.Gson;
-import jakarta.servlet.ServletException;
+import jakarta.inject.Inject;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,8 +15,11 @@ import java.util.Map;
 @WebServlet(name = "SortingServlet", urlPatterns = {"/api/sort"})
 public class SortingServlet extends HttpServlet {
 
+    @Inject
+    private SortingService sortingService;
+
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String numbersStr = req.getParameter("numbers");
         String sortType = req.getParameter("type");
         int[] numbers = Arrays.stream(numbersStr.split(","))
@@ -24,41 +27,19 @@ public class SortingServlet extends HttpServlet {
                 .mapToInt(Integer::parseInt)
                 .toArray();
 
-        int[] sortedNumbers = sortNumbers(numbers, sortType);
+        int[] sortedNumbers = sortingService.sortNumbers(numbers, sortType);
 
+        resp.setContentType("application/json");
+        String jsonResponse = generateJsonResponse(sortedNumbers, sortType, createLinks(req));
+        resp.getWriter().write(jsonResponse);
+    }
+
+    private Map<String, Map<String, Object>> createLinks(HttpServletRequest req) {
         String baseUrl = req.getRequestURL().toString().replace(req.getRequestURI(), req.getContextPath());
         Map<String, Map<String, Object>> links = new HashMap<>();
         links.put("self", createLink(baseUrl + "/api/sort", "POST"));
         links.put("home", createLink(baseUrl + "/api/home", "GET"));
-
-        resp.setContentType("application/json");
-
-        String jsonResponse = generateJsonResponse(sortedNumbers, sortType, links);
-
-        resp.getWriter().write(jsonResponse);
-    }
-
-    private int[] sortNumbers(int[] numbers, String sortType) {
-        switch (sortType) {
-            case "quick":
-                SortingAlgorithms.QuickSort.sort(numbers);
-                break;
-            case "merge":
-                SortingAlgorithms.MergeSort.sort(numbers);
-                break;
-            case "heap":
-                SortingAlgorithms.HeapSort.sort(numbers);
-                break;
-            case "radix":
-                SortingAlgorithms.RadixSort.sort(numbers);
-                break;
-            case "bucket":
-                SortingAlgorithms.BucketSort.sort(numbers);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid sort type: " + sortType);
-        }
-        return numbers;
+        return links;
     }
 
     private Map<String, Object> createLink(String url, String... methods) {
@@ -69,11 +50,16 @@ public class SortingServlet extends HttpServlet {
     }
 
     private String generateJsonResponse(int[] sortedNumbers, String sortType, Map<String, Map<String, Object>> links) {
-        Map<String, Object> root = new LinkedHashMap<>();  // Changed from HashMap to LinkedHashMap
-        root.put("sortedNumbers", Arrays.toString(sortedNumbers));  // Inserted first
-        root.put("sortType", sortType);                            // Inserted second
-        root.put("_links", links);                                  // Inserted last
-
+        StartingServlet.ConfigService configService = (StartingServlet.ConfigService) getServletContext().getAttribute("configService");
+        if (configService == null) {
+            System.out.println("ConfigService is null");
+            throw new RuntimeException("ConfigService is not available in ServletContext.");
+        }
+        Map<String, Object> root = new LinkedHashMap<>();
+        root.put("sortedNumbers", Arrays.toString(sortedNumbers));
+        root.put("sortType", sortType);
+        root.put("_links", links);
+        root.put("configInfo", configService.getConfigInfo());
         return new Gson().toJson(root);
     }
 }
