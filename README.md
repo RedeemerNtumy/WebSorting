@@ -84,7 +84,7 @@ webSorting is a web application developed using Jakarta EE and Thymeleaf for ren
 
 ## Deployment
 
-Deploy the generated WAR file to a Jakarta EE compatible server such as Tomcat or WildFly.
+Deploy the generated WAR file to Tomcat.
 
 ## API Endpoints
 
